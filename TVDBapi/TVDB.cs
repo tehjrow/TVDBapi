@@ -9,17 +9,53 @@ namespace TVDBapi
 {
     public class TVDB
     {
-        public string test;
-
-        public async Task<string> getStuff()
+        //private string token;
+        private Token token;
+        private string apiKey;
+        
+        public TVDB(string apiKey)
         {
-            var responseString = await "https://api.thetvdb.com/login"
-                .WithHeader("Accept", "application/json")
-                .PostJsonAsync(new { apikey = "26EF26F60843B42C"})
-                .ReceiveString();
-            return responseString;
+            this.apiKey = apiKey;
         }
 
+        
+
+
+        private async Task<Token> getToken(string ApiKey)
+        {
+            token = await "https://api.thetvdb.com/login"
+                .WithHeader("Accept", "application/json")
+                .PostJsonAsync(new { apikey = ApiKey })
+                //.ReceiveString();
+                .ReceiveJson<Token>();
+            return token; 
+                     
+        }
+
+        public async Task<ShowData> Search()
+        {
+            await getToken(apiKey);
+
+            ShowData showData;
+            try
+            {
+                showData = await "https://api.thetvdb.com/search/series?name=battlestar"
+                    .WithHeader("Accept", "application/json")
+                    .WithHeader("Authorization", " Bearer " + this.token.token)
+                    .GetAsync()
+                    .ReceiveJson<ShowData>();
+                    
+            }
+            catch (FlurlHttpException ex)
+            {
+                if (ex.Call.Response != null)                    
+                    throw ex;
+                else
+                    throw ex;
+            }
+
+            return showData;
+        }
 
     }
 }
