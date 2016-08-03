@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace TVDBapi
 {
-    public class Class1
+    public class TVDB
     {
+        public string test;
     }
 }
