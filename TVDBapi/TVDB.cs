@@ -10,14 +10,15 @@ namespace TVDBapi
 {
     public class TVDB
     {        
-        private Token token;        
-        public string tokenString;
-        
-        
-
-        
-
-
+        private Token token;           
+        //This is public for testing     
+        public string tokenString;    
+            
+        /// <summary>
+        /// Sets the token that gets sent in all requests.
+        /// </summary>
+        /// <param name="ApiKey">APIKEY you get from the TVDB site.</param>
+        /// <returns></returns>
         public async Task SetTokenFromApikey(string ApiKey)
         {
             token = await "https://api.thetvdb.com/login"
@@ -27,6 +28,11 @@ namespace TVDBapi
             tokenString = token.token;
         }
 
+        /// <summary>
+        /// Search for a show.  Returns ShowData which contains a list of Shows (.data).
+        /// </summary>
+        /// <param name="nameToSearch">Name of show to search for.</param>
+        /// <returns></returns>
         public async Task<ShowData> Search(string nameToSearch)
         {
             var url = "https://api.thetvdb.com/search/series";
