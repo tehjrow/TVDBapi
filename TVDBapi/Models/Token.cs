@@ -8,6 +8,6 @@ namespace TVDBapi
 {
     class Token
     {
-        public string token;
+        public string token { get; set; }
     }
 }

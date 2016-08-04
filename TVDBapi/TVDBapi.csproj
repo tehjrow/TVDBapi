@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Series.cs" />
     <Compile Include="Models\Show.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="TVDB.cs" />

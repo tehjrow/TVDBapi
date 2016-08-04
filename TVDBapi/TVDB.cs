@@ -10,7 +10,7 @@ namespace TVDBapi
 {
     public class TVDB
     {        
-        private Token token;           
+        private Token _token;           
         //This is public for testing     
         public string tokenString;    
             
@@ -21,11 +21,18 @@ namespace TVDBapi
         /// <returns></returns>
         public async Task SetTokenFromApikey(string ApiKey)
         {
-            token = await "https://api.thetvdb.com/login"
-                .WithHeader("Accept", "application/json")
-                .PostJsonAsync(new { apikey = ApiKey })            
-                .ReceiveJson<Token>();
-            tokenString = token.token;
+            try
+            {
+                _token = await "https://api.thetvdb.com/login"
+                    .WithHeader("Accept", "application/json")
+                    .PostJsonAsync(new { apikey = ApiKey })
+                    .ReceiveJson<Token>();
+                tokenString = _token.token;
+            }
+            catch (FlurlHttpException ex)
+            {
+                throw ex;
+            }
         }
 
         /// <summary>
@@ -40,9 +47,10 @@ namespace TVDBapi
 
             try
             {
-                showData = await url.SetQueryParam("name", nameToSearch)
+                showData = await url
+                    .SetQueryParam("name", nameToSearch)
                     .WithHeader("Accept", "application/json")
-                    .WithHeader("Authorization", " Bearer " + token.token)
+                    .WithHeader("Authorization", " Bearer " + _token.token)
                     .GetAsync()
                     .ReceiveJson<ShowData>();
                     
@@ -53,6 +61,34 @@ namespace TVDBapi
             }
 
             return showData;
+        }
+
+        /// <summary>
+        /// Gets info about a series using the id (found by searching with Search()).
+        /// </summary>
+        /// <param name="id">TVDB show id.</param>
+        /// <returns></returns>
+        public async Task<SeriesData> GetSeriesById(int id)
+        {
+            var url = "https://api.thetvdb.com/series";
+            SeriesData seriesData;
+
+            try
+            {
+                seriesData = await url
+                    .AppendPathSegment(id)
+                    .WithHeader("Accept", "application/json")
+                    .WithHeader("Authorization", " Bearer " + _token.token)
+                    .GetAsync()
+                    .ReceiveJson<SeriesData>();
+
+            }
+            catch (FlurlHttpException ex)
+            {
+                throw ex;
+            }
+
+            return seriesData;
         }
 
     }
