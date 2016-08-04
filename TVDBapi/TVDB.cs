@@ -1,4 +1,5 @@
-﻿using Flurl.Http;
+﻿using Flurl;
+using Flurl.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,50 +9,41 @@ using System.Threading.Tasks;
 namespace TVDBapi
 {
     public class TVDB
-    {
-        //private string token;
-        private Token token;
-        private string apiKey;
+    {        
+        private Token token;        
+        public string tokenString;
         
-        public TVDB(string apiKey)
-        {
-            this.apiKey = apiKey;
-        }
+        
 
         
 
 
-        private async Task<Token> getToken(string ApiKey)
+        public async Task SetTokenFromApikey(string ApiKey)
         {
             token = await "https://api.thetvdb.com/login"
                 .WithHeader("Accept", "application/json")
-                .PostJsonAsync(new { apikey = ApiKey })
-                //.ReceiveString();
+                .PostJsonAsync(new { apikey = ApiKey })            
                 .ReceiveJson<Token>();
-            return token; 
-                     
+            tokenString = token.token;
         }
 
-        public async Task<ShowData> Search()
+        public async Task<ShowData> Search(string nameToSearch)
         {
-            await getToken(apiKey);
-
+            var url = "https://api.thetvdb.com/search/series";
             ShowData showData;
+
             try
             {
-                showData = await "https://api.thetvdb.com/search/series?name=battlestar"
+                showData = await url.SetQueryParam("name", nameToSearch)
                     .WithHeader("Accept", "application/json")
-                    .WithHeader("Authorization", " Bearer " + this.token.token)
+                    .WithHeader("Authorization", " Bearer " + token.token)
                     .GetAsync()
                     .ReceiveJson<ShowData>();
                     
             }
             catch (FlurlHttpException ex)
             {
-                if (ex.Call.Response != null)                    
-                    throw ex;
-                else
-                    throw ex;
+                throw ex;
             }
 
             return showData;
