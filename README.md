@@ -5,7 +5,7 @@ This is a C# library that uses the TVDB api to get information about TV Shows.
 
 First set the token with an apikey provided by TVDB
 
-```c#
+```C#
 TVDB tvdb = new TVDB();
 await tvdb.SetTokenFromApiKey("apikeyhere");
 ```
