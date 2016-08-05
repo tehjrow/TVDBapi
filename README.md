@@ -18,6 +18,7 @@ ShowData showResults = await tvdb.Search("battlestar");
 
 The search results contain an id which can then be used to get details about a specific show
 
-```chsharp
+```csharp
 SeriesData seriesData = await tvdb.GetSeriesById(id);
 ```
+
