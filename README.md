@@ -1,6 +1,9 @@
 # TVDBapi
 This is a C# library that uses the TVDB api to get information about TV Shows.
 
+##Get
+Nuget!  https://www.nuget.org/packages/TVDBapi.dll
+
 ##Usage
 
 First set the token with an apikey provided by TVDB
