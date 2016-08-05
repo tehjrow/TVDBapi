@@ -10,7 +10,7 @@ TVDB tvdb = new TVDB();
 await tvdb.SetTokenFromApiKey("apikeyhere");
 ```
 
-Then you can use Search() to find a show and return a List<Show> of shows that matched
+Then you can use Search() to find a show and return ShowData which contains a List<Show> called `data` of shows that matched
 
 ```csharp
 ShowData showResults = await tvdb.Search("battlestar");
