@@ -29,3 +29,9 @@ ShowData showResults = await tvdb.Search("battlestar");
 SeriesData seriesData = await tvdb.GetSeriesById(78874);
 ```
 ![alt tag](https://github.com/tehjrow/TVDBapi/blob/master/TVDBapi/Images/SeriesData.PNG)
+
+
+```csharp
+SeasonEpisodeSummaryData seriesSummary = await tvdb.GetSeriesSummary(73545);
+```
+![alt tag](https://github.com/tehjrow/TVDBapi/blob/master/TVDBapi/Images/SeasonEpisodeSummary.PNG)
