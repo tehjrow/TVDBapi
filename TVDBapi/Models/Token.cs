@@ -12,5 +12,7 @@ namespace TVDBapi
     {
         [DataMember(Name = "token")]
         public string token { get; set; }
+                
+        public string apiKey { get; set; }
     }
 }

@@ -10,32 +10,47 @@ namespace TVDBapi
 {
     public class TVDB
     {        
-        private Token _token;           
+        private Token _token = new Token();           
         //This is public for testing     
-        public string tokenString;    
-           
-        
-        
+        public string tokenString;
 
+        //New "Constructor" because constructors can't be async
         /// <summary>
-        /// Sets the token that gets sent in all requests
+        /// Initialize library
         /// </summary>
-        /// <param name="ApiKey">APIKEY you get from the TVDB site</param>
+        /// <param name="apiKey">APIKEY from TVDB</param>
         /// <returns></returns>
-        public async Task SetTokenFromApikey(string ApiKey)
+        public static async Task<TVDB> Init(string apiKey)
         {
+            TVDB tvdb = new TVDB();
+            tvdb._token.apiKey = apiKey;
+            await tvdb.SetToken(tvdb._token.apiKey);
+            return tvdb;
+
+        }
+
+        private TVDB()
+        {
+        }
+
+
+        //Sets the token from the apikey from tvdb
+        private async Task SetToken(string ApiKey)
+        {
+
+
             using (HttpClient client = new HttpClient())
             {
                 //Url to TVDB
                 Uri url = new Uri("https://api.thetvdb.com/login");
-                
+
                 //Set Accept request header
-                client.DefaultRequestHeaders                    
-                      .Add("Accept", "application/json");                
+                client.DefaultRequestHeaders
+                      .Add("Accept", "application/json");
 
                 //Setup request message with json apikey and content-type header
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, url);
-                request.Content = new StringContent("{\"apiKey\":\""+ ApiKey +"\"}",
+                request.Content = new StringContent("{\"apiKey\":\"" + ApiKey + "\"}",
                                                     Encoding.UTF8,
                                                     "application/json");
 
@@ -55,6 +70,7 @@ namespace TVDBapi
                 tokenString = _token.token;
             }
         }
+                
 
         /// <summary>
         /// Search for a show

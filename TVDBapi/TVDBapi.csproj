@@ -46,7 +46,6 @@
     <Compile Include="Models\Series.cs" />
     <Compile Include="Models\Show.cs" />
     <Compile Include="Models\Token.cs" />
-    <Compile Include="oldcodestorage.cs" />
     <Compile Include="TVDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
