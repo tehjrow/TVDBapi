@@ -6,8 +6,6 @@ Nuget!  https://www.nuget.org/packages/TVDBapi.dll
 
 ##Usage
 
-First set the token with an apikey provided by TVDB
-
 | Command | Description |
 | ------- | ----------- |
 | `TVDB tvdb = await TVDB.Init("apikeyhere");` | Create new instance with apikey from TVDB|
