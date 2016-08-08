@@ -18,6 +18,7 @@ Then you can use Search() to find a show and return `ShowData` which contains a 
 ```csharp
 ShowData showResults = await tvdb.Search("battlestar");
 ```
+![alt tag](https://github.com/tehjrow/TVDBapi/blob/master/TVDBapi/Images/ShowData.PNG)
 
 The search results contain an id which can then be used to get details about a specific show
 
