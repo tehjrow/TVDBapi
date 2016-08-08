@@ -41,12 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Episode.cs" />
+    <Compile Include="Models\SeasonEpisodeSummary.cs" />
     <Compile Include="Models\Series.cs" />
     <Compile Include="Models\Show.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="oldcodestorage.cs" />
     <Compile Include="TVDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\ShowData.PNG" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

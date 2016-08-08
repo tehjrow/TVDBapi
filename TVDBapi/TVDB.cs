@@ -126,6 +126,40 @@ namespace TVDBapi
                 //Return SeriesData object
                 return seriesData;
             }
-        }        
+
+        }
+        public async Task<SeasonEpisodeSummaryData> GetSeriesSummary(int id)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                //Put token in header
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token.token);
+
+                //Url to series info with id
+                Uri url = new Uri("https://api.thetvdb.com/series/" + id + "/episodes/summary");
+
+                //Set Accept request header
+                client.DefaultRequestHeaders
+                      .Add("Accept", "application/json");
+
+                //Send via get, get response, read it into a string
+                HttpResponseMessage resp = await client.GetAsync(url);
+                string respString = await resp.Content.ReadAsStringAsync();
+
+                //Read into byte array and them create a memory stream
+                byte[] byteArray = Encoding.UTF8.GetBytes(respString);
+                MemoryStream stream1 = new MemoryStream(byteArray);
+
+                //Create serializer and read the stream into a SeriesData object
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SeasonEpisodeSummaryData));
+                SeasonEpisodeSummaryData seriesEpisodeSummary = serializer.ReadObject(stream1) as SeasonEpisodeSummaryData;
+
+                //Return SeriesData object
+                return seriesEpisodeSummary;
+            }
+        }
+
+
+                
     }
 }
