@@ -14,6 +14,7 @@ First set the token with an apikey provided by TVDB
 | `await tvdb.SetTokenFromApiKey("apikeyhere");` | Set token to allow TVDB usage |
 | `ShowData showResults = await tvdb.Search(string);` | Search the TVDB and return a List<Show> of shows |
 | `SeriesData seriesData = await tvdb.GetSeriesById(id);` | Get details about a show based on the `id` returned from `Search()` |
+| `SeasonEpisodeSummaryData summaryData = await tvdb.GetSeriesSummary(id);` | Get a summary of seasons/episods of a show by `id` |
 
 
 ##Examples
