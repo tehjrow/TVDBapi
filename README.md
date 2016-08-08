@@ -25,4 +25,4 @@ The search results contain an id which can then be used to get details about a s
 ```csharp
 SeriesData seriesData = await tvdb.GetSeriesById(id);
 ```
-
+![alt tag](https://github.com/tehjrow/TVDBapi/blob/master/TVDBapi/Images/SeriesData.PNG)
