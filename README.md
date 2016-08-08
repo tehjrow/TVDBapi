@@ -13,6 +13,7 @@ First set the token with an apikey provided by TVDB
 | `TVDB tvdb = new TVDB();` | Create new instance |
 | `await tvdb.SetTokenFromApiKey("apikeyhere");` | Set token to allow TVDB usage |
 | `ShowData showResults = await tvdb.Search("battlestar");` | Search the TVDB and return a List<Show> of shows |
+| `SeriesData seriesData = await tvdb.GetSeriesById(id);` | Get details about a show based on the `id` returned from `Search()` |
 
 
 ```csharp
