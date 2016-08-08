@@ -10,7 +10,7 @@ First set the token with an apikey provided by TVDB
 
 | Command | Description |
 | ------- | ----------- |
-| `TVDB tvdb = new TVDB(); | Create new instance |
+| `TVDB tvdb = new TVDB();` | Create new instance |
 
 
 ```csharp
