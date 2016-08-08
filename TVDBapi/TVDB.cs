@@ -10,7 +10,8 @@ namespace TVDBapi
 {
     public class TVDB
     {        
-        private Token _token = new Token();           
+        private Token _token = new Token();  
+                 
         //This is public for testing     
         public string tokenString;
 
@@ -54,9 +55,13 @@ namespace TVDBapi
                                                     Encoding.UTF8,
                                                     "application/json");
 
-                //Send via post, get response, read content into string
+                //Send via post, get response, read content into string, check to be sure it was OK
                 HttpResponseMessage resp = await client.SendAsync(request);
                 string respString = await resp.Content.ReadAsStringAsync();
+                if(resp.ReasonPhrase != "OK")
+                {
+                    throw new Exception(resp.ReasonPhrase);
+                }
 
                 //Read into byte array and them create a memory stream
                 byte[] byteArray = Encoding.UTF8.GetBytes(respString);
@@ -70,43 +75,26 @@ namespace TVDBapi
                 tokenString = _token.token;
             }
         }
-                
 
         /// <summary>
-        /// Search for a show
+        /// Searches TVDB
         /// </summary>
         /// <param name="nameToSearch">Name of show to search for</param>
-        /// <returns>Returns ShowData which contains a list of Show (.data)</returns>
+        /// <returns>ShowData object containing a List<Show> inside .data</returns>
         public async Task<ShowData> Search(string nameToSearch)
         {
-            using (HttpClient client = new HttpClient())
-            {
-                //Put token in header
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token.token);
+            //Url to series search with nametosearch
+            Uri url = new Uri("https://api.thetvdb.com/search/series?name=" + nameToSearch);
 
-                //Url to series search with nametosearch
-                Uri url = new Uri("https://api.thetvdb.com/search/series?name=" + nameToSearch);
+            MemoryStream stream1 = await _GetStreamFromUrl(url);
+            //Create serializer and read the stream into a ShowData object
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(ShowData));
+            ShowData showData = serializer.ReadObject(stream1) as ShowData;
 
-                //Set Accept request header
-                client.DefaultRequestHeaders
-                      .Add("Accept", "application/json");
-
-                //Send via get, get response, read it into a string
-                HttpResponseMessage resp = await client.GetAsync(url);
-                string respString = await resp.Content.ReadAsStringAsync();
-
-                //Read into byte array and them create a memory stream
-                byte[] byteArray = Encoding.UTF8.GetBytes(respString);
-                MemoryStream stream1 = new MemoryStream(byteArray);
-
-                //Create serializer and read the stream into a ShowData object
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(ShowData));
-                ShowData showData = serializer.ReadObject(stream1) as ShowData;
-
-                //Return ShowData object
-                return showData;
-            }
+            //Return ShowData object
+            return showData;
         }
+
 
         /// <summary>
         /// Gets info about a series using the id (foubd by searching with Search())
@@ -114,45 +102,46 @@ namespace TVDBapi
         /// <param name="id">TVDB show id</param>
         /// <returns>SeriesData containing the series</returns>
         public async Task<SeriesData> GetSeriesById(int id)
-        {
-            using (HttpClient client = new HttpClient())
-            {
-                //Put token in header
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token.token);
+        {            
+            //Url to series info with id
+            Uri url = new Uri("https://api.thetvdb.com/series/" + id);
 
-                //Url to series info with id
-                Uri url = new Uri("https://api.thetvdb.com/series/" + id);
+            MemoryStream stream1 = await _GetStreamFromUrl(url);
+            //Create serializer and read the stream into a SeriesData object
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SeriesData));
+            SeriesData seriesData = serializer.ReadObject(stream1) as SeriesData;
 
-                //Set Accept request header
-                client.DefaultRequestHeaders
-                      .Add("Accept", "application/json");
-
-                //Send via get, get response, read it into a string
-                HttpResponseMessage resp = await client.GetAsync(url);
-                string respString = await resp.Content.ReadAsStringAsync();
-
-                //Read into byte array and them create a memory stream
-                byte[] byteArray = Encoding.UTF8.GetBytes(respString);
-                MemoryStream stream1 = new MemoryStream(byteArray);
-
-                //Create serializer and read the stream into a SeriesData object
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SeriesData));
-                SeriesData seriesData = serializer.ReadObject(stream1) as SeriesData;
-
-                //Return SeriesData object
-                return seriesData;
-            }
-
+            //Return SeriesData object
+            return seriesData;
         }
+
+        /// <summary>
+        /// Gets a summary of the show (number of episodes and seasons)
+        /// </summary>
+        /// <param name="id">TVDB show id</param>
+        /// <returns>SeasonEpisodeSummaryData containing .data</returns>
         public async Task<SeasonEpisodeSummaryData> GetSeriesSummary(int id)
+        {       
+            //Url to series info with id
+            Uri url = new Uri("https://api.thetvdb.com/series/" + id + "/episodes/summary");
+
+            MemoryStream stream1 = await _GetStreamFromUrl(url);
+            //Create serializer and read the stream into a SeriesData object
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SeasonEpisodeSummaryData));
+            SeasonEpisodeSummaryData seriesEpisodeSummary = serializer.ReadObject(stream1) as SeasonEpisodeSummaryData;
+            
+            //Return SeriesData object
+            return seriesEpisodeSummary;            
+        }
+        
+        
+        //Returns a stream based on url (or throws response message if failed)
+        private async Task<MemoryStream> _GetStreamFromUrl(Uri url)
         {
             using (HttpClient client = new HttpClient())
             {
                 //Put token in header
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token.token);
-
-                //Url to series info with id
-                Uri url = new Uri("https://api.thetvdb.com/series/" + id + "/episodes/summary");
 
                 //Set Accept request header
                 client.DefaultRequestHeaders
@@ -161,21 +150,18 @@ namespace TVDBapi
                 //Send via get, get response, read it into a string
                 HttpResponseMessage resp = await client.GetAsync(url);
                 string respString = await resp.Content.ReadAsStringAsync();
+                if (resp.ReasonPhrase != "OK")
+                {
+                    throw new Exception(resp.ReasonPhrase);
+                }
 
                 //Read into byte array and them create a memory stream
                 byte[] byteArray = Encoding.UTF8.GetBytes(respString);
                 MemoryStream stream1 = new MemoryStream(byteArray);
 
-                //Create serializer and read the stream into a SeriesData object
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(SeasonEpisodeSummaryData));
-                SeasonEpisodeSummaryData seriesEpisodeSummary = serializer.ReadObject(stream1) as SeasonEpisodeSummaryData;
-
-                //Return SeriesData object
-                return seriesEpisodeSummary;
+                return stream1;                
             }
         }
-
-
-                
+                        
     }
 }
