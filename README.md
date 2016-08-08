@@ -25,6 +25,6 @@ ShowData showResults = await tvdb.Search("battlestar");
 
 
 ```csharp
-SeriesData seriesData = await tvdb.GetSeriesById(id);
+SeriesData seriesData = await tvdb.GetSeriesById(78874);
 ```
 ![alt tag](https://github.com/tehjrow/TVDBapi/blob/master/TVDBapi/Images/SeriesData.PNG)
