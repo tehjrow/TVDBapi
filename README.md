@@ -11,6 +11,7 @@ First set the token with an apikey provided by TVDB
 | Command | Description |
 | ------- | ----------- |
 | `TVDB tvdb = new TVDB();` | Create new instance |
+| `await tvdb.SetTokenFromApiKey("apikeyhere");` | Set token to allow TVDB usage |
 
 
 ```csharp
