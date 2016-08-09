@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\EpisodeData.PNG" />
     <Content Include="Images\SeasonEpisodeSummary.PNG" />
     <Content Include="Images\SeriesData.PNG" />
     <Content Include="Images\ShowData.PNG" />
