@@ -12,7 +12,7 @@ namespace TVDBapi
         public int airedEpisodeNumber { get; set; }
         public int airedSeason { get; set; }
         public int airedSeasonID { get; set; }
-        public int? dvdEpisodeNumber { get; set; }
+        public float? dvdEpisodeNumber { get; set; }
         public int? dvdSeason { get; set; }
         public string episodeName { get; set; }
         public string firstAired { get; set; }
@@ -20,8 +20,22 @@ namespace TVDBapi
         public string overview { get; set; }
     }
 
+    public class Links
+    {        
+        public int? first { get; set; }
+        public int? last { get; set; }
+        public int? next { get; set; }
+        public int? prev { get; set; }
+    }
+
     public class EpisodeData
     {
+        public EpisodeData()
+        {
+            links = new Links();
+        }
+
         public List<Episode> data { get; set; }
+        public Links links { get; set; }
     }
 }

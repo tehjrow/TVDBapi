@@ -134,7 +134,35 @@ namespace TVDBapi
             return seriesEpisodeSummary;            
         }
         
-        
+        public async Task<EpisodeData> GetEpisodes(int id)
+        {
+            //Url to series info with id
+            Uri url = new Uri("https://api.thetvdb.com/series/" + id + "/episodes");
+
+            MemoryStream stream1 = await _GetStreamFromUrl(url);
+            //Create serializer and read the stream into a SeriesData object
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(EpisodeData));
+            EpisodeData episodeData = serializer.ReadObject(stream1) as EpisodeData;
+
+            if(episodeData.links.last != 1)
+            {
+                EpisodeData episodeDataExtra = new EpisodeData();
+                episodeDataExtra.links.next = episodeData.links.next;
+                while (episodeDataExtra.links.next != null)
+                {                    
+                    url = new Uri("https://api.thetvdb.com/series/" + id + "/episodes?page=" + episodeDataExtra.links.next);
+                    stream1 = await _GetStreamFromUrl(url);
+                    serializer = new DataContractJsonSerializer(typeof(EpisodeData));
+                    episodeDataExtra = serializer.ReadObject(stream1) as EpisodeData;
+                    episodeData.data.AddRange(episodeDataExtra.data);
+                }
+                
+            }
+
+            //Return SeriesData object
+            return episodeData;
+        }
+
         //Returns a stream based on url (or throws response message if failed)
         private async Task<MemoryStream> _GetStreamFromUrl(Uri url)
         {
