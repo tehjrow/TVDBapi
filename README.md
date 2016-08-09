@@ -10,6 +10,7 @@ This is a C# library that uses the TVDB api to get information about TV Shows.
 | `ShowData showResults = await tvdb.Search(string);` | Search the TVDB and return a List<Show> of shows |
 | `SeriesData seriesData = await tvdb.GetSeriesById(id);` | Get details about a show based on the `id` returned from `Search()` |
 | `SeasonEpisodeSummaryData summaryData = await tvdb.GetSeriesSummary(id);` | Get a summary of seasons/episods of a show by `id` |
+| `EpisodeData episodeData = await tvdb.GetEpisodes(id);` | Get a list of all episodes of a show by `id` |
 
 
 ##Examples
@@ -29,4 +30,9 @@ SeriesData seriesData = await tvdb.GetSeriesById(78874);
 ```csharp
 SeasonEpisodeSummaryData seriesSummary = await tvdb.GetSeriesSummary(73545);
 ```
+![alt tag](https://github.com/tehjrow/TVDBapi/blob/master/TVDBapi/Images/SeasonEpisodeSummary.PNG)
+
+```csharp
+EpisodeData episodeData = await tvdb.GetEpisodes(73545);
+````
 ![alt tag](https://github.com/tehjrow/TVDBapi/blob/master/TVDBapi/Images/SeasonEpisodeSummary.PNG)
