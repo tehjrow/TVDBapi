@@ -35,4 +35,4 @@ SeasonEpisodeSummaryData seriesSummary = await tvdb.GetSeriesSummary(73545);
 ```csharp
 EpisodeData episodeData = await tvdb.GetEpisodes(73545);
 ````
-![alt tag](https://github.com/tehjrow/TVDBapi/blob/master/TVDBapi/Images/SeasonEpisodeSummary.PNG)
+![alt tag](https://github.com/tehjrow/TVDBapi/blob/master/TVDBapi/Images/EpisodeData.PNG)
