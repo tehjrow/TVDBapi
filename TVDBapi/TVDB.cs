@@ -134,6 +134,11 @@ namespace TVDBapi
             return seriesEpisodeSummary;            
         }
         
+        /// <summary>
+        /// Gets a list of all episodes from a tv show
+        /// </summary>
+        /// <param name="id">TVDB show id</param>
+        /// <returns>EpisodeData containing .data with a list of all episodes</returns>
         public async Task<EpisodeData> GetEpisodes(int id)
         {
             //Url to series info with id
